@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // TypeScript interfaces
 interface Winner {
@@ -16,7 +16,7 @@ const DrawWinners: React.FC = () => {
   const [showAll, setShowAll] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  
+
   // Sample winners data
   const winners: Winner[] = [
     {
@@ -42,27 +42,27 @@ const DrawWinners: React.FC = () => {
   // Animation sequence for winners
   useEffect(() => {
     if (!isVisible) return;
-    
+
     const animationSequence = async () => {
       // Reset to initial state
       setShowAll(false);
       setActiveIndex(0);
-      
+
       // Cycle through each winner
       for (let i = 0; i < winners.length; i++) {
         setActiveIndex(i);
         await new Promise(resolve => setTimeout(resolve, 1800));
       }
-      
+
       // Show all winners after cycle completes
       setShowAll(true);
     };
-    
+
     // Start animation sequence
     const timeout = setTimeout(() => {
       animationSequence();
     }, 500);
-    
+
     return () => clearTimeout(timeout);
   }, [isVisible]);
 
@@ -96,7 +96,7 @@ const DrawWinners: React.FC = () => {
   }).replace(/\//g, ':');
 
   return (
-    <div 
+    <div
       ref={sectionRef}
       className="relative bg-gradient-to-r from-[#006b91] to-[#005a7a] text-white  overflow-hidden p-6 md:p-10 shadow-2xl"
     >
@@ -104,7 +104,7 @@ const DrawWinners: React.FC = () => {
       <div className="absolute right-0 top-0 w-1/2 h-full bg-[#004766] z-0 transform skew-x-[20deg] translate-x-20" />
       <div className="absolute -left-12 -bottom-12 w-48 h-48 bg-[#007ba5] opacity-30 rounded-full blur-xl" />
       <div className="absolute right-10 top-20 w-24 h-24 bg-[#f39c1c] opacity-20 rounded-full blur-xl" />
-      
+
       {/* Animated particles */}
       {isVisible && (
         <>
@@ -112,17 +112,17 @@ const DrawWinners: React.FC = () => {
             <motion.div
               key={i}
               className="absolute w-2 h-2 rounded-full bg-white opacity-30"
-              initial={{ 
-                x: Math.random() * 1000, 
+              initial={{
+                x: Math.random() * 1000,
                 y: Math.random() * 500,
                 opacity: 0.1
               }}
-              animate={{ 
+              animate={{
                 y: [null, Math.random() * -100],
                 opacity: [0.1, 0.8, 0],
                 scale: [1, 1.5, 0]
               }}
-              transition={{ 
+              transition={{
                 duration: 5 + Math.random() * 10,
                 repeat: Infinity,
                 delay: Math.random() * 5
@@ -133,7 +133,7 @@ const DrawWinners: React.FC = () => {
       )}
 
       {/* Header */}
-      <motion.div 
+      <motion.div
         className="relative z-10 flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
@@ -150,7 +150,7 @@ const DrawWinners: React.FC = () => {
             <p className="text-sm text-white/80">{currentDate}</p>
           </div>
         </div>
-        
+
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 20 }}
@@ -179,8 +179,8 @@ const DrawWinners: React.FC = () => {
                 y: isVisible ? 0 : 50,
                 scale: !showAll && isVisible && index === activeIndex ? 1.05 : 1
               }}
-              transition={{ 
-                duration: 0.7, 
+              transition={{
+                duration: 0.7,
                 delay: showAll ? 0.1 * index : 0,
                 ease: "easeOut"
               }}
@@ -194,7 +194,7 @@ const DrawWinners: React.FC = () => {
                   className="object-cover transition-transform duration-500 hover:scale-110"
                 />
                 {(!showAll && index === activeIndex) && (
-                  <motion.div 
+                  <motion.div
                     className="absolute inset-0 bg-gradient-to-t from-[#004766]/80 to-transparent"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -202,7 +202,7 @@ const DrawWinners: React.FC = () => {
                   />
                 )}
                 {(!showAll && index === activeIndex) && (
-                  <motion.div 
+                  <motion.div
                     className="absolute bottom-4 left-0 right-0 text-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -212,7 +212,7 @@ const DrawWinners: React.FC = () => {
                   </motion.div>
                 )}
               </div>
-              
+
               <div className="p-4">
                 <div className="h-px bg-[#1d506a] w-full mb-3"></div>
                 <div className="flex justify-between items-center">
@@ -220,7 +220,7 @@ const DrawWinners: React.FC = () => {
                   <p className="text-xs text-white/70">{winner.date}</p>
                 </div>
                 {showAll && (
-                  <motion.p 
+                  <motion.p
                     className="text-sm text-[#f39c1c] mt-1"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -235,7 +235,7 @@ const DrawWinners: React.FC = () => {
         </div>
 
         {/* Prize Section */}
-        <motion.div 
+        <motion.div
           className="w-full md:w-1/3 flex flex-col items-center md:items-end text-center md:text-right z-10"
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 30 }}
@@ -246,7 +246,7 @@ const DrawWinners: React.FC = () => {
             AED 50,000*
           </h3>
           <p className="text-sm text-white/70 mt-2">*Terms & conditions apply</p>
-          <motion.button 
+          <motion.button
             className="mt-6 md:mt-8 bg-gradient-to-r from-[#f39c1c] to-[#ffaa33] hover:from-[#ffaa33] hover:to-[#f39c1c] text-white font-bold py-3 px-8 md:px-10 rounded-full text-lg shadow-lg transition-all duration-300 hover:shadow-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
@@ -257,7 +257,7 @@ const DrawWinners: React.FC = () => {
       </div>
 
       {/* Navigation Dots */}
-      <motion.div 
+      <motion.div
         className="relative z-10 mt-8 md:mt-12 flex justify-center gap-3"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
@@ -266,11 +266,10 @@ const DrawWinners: React.FC = () => {
         {winners.map((_, index) => (
           <button
             key={index}
-            className={`h-3 w-3 rounded-full cursor-pointer transition-all duration-300 ${
-              index === (showAll ? winners.length - 1 : activeIndex) 
-                ? 'bg-[#f39c1c] scale-125' 
-                : 'bg-white/60 hover:bg-white/80'
-            }`}
+            className={`h-3 w-3 rounded-full cursor-pointer transition-all duration-300 ${index === (showAll ? winners.length - 1 : activeIndex)
+              ? 'bg-[#f39c1c] scale-125'
+              : 'bg-white/60 hover:bg-white/80'
+              }`}
             onClick={() => {
               setShowAll(index === winners.length - 1);
               if (index < winners.length) {
@@ -281,9 +280,8 @@ const DrawWinners: React.FC = () => {
           />
         ))}
         <button
-          className={`h-3 w-3 rounded-full cursor-pointer transition-all duration-300 ${
-            showAll ? 'bg-[#f39c1c] scale-125' : 'bg-white/60 hover:bg-white/80'
-          }`}
+          className={`h-3 w-3 rounded-full cursor-pointer transition-all duration-300 ${showAll ? 'bg-[#f39c1c] scale-125' : 'bg-white/60 hover:bg-white/80'
+            }`}
           onClick={() => {
             setShowAll(true);
           }}
