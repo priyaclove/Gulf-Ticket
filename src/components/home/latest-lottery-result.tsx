@@ -25,7 +25,7 @@ interface PrizeInfo {
 // Component for the animated background
 const AnimatedBackground: React.FC<{ game: GameDetails }> = ({ game }) => {
   return (
-    <div 
+    <div
       className="absolute inset-0 transition-all duration-700 ease-in-out z-0"
       style={{ background: `linear-gradient(135deg, ${game.gradientFrom}, ${game.gradientTo})` }}
     >
@@ -56,16 +56,15 @@ const GameTabs: React.FC<{
   setActiveGame: (game: string) => void;
 }> = ({ games, activeGame, setActiveGame }) => {
   return (
-    <div className="flex overflow-x-auto scrollbar-hide mb-6 gap-3 relative z-10">
+    <div className="flex overflow-x-auto scrollbar-hide gap-3 relative z-10 items-center justify-between w-full max-w-4xl mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-full shadow-lg">
       {Object.keys(games).map((game) => (
         <button
           key={game}
           onClick={() => setActiveGame(game)}
-          className={`px-6 py-3 rounded-full font-bold transition-all duration-500 transform flex items-center gap-2 ${
-            activeGame === game
-              ? `${games[game].bgColor} text-gray-800 scale-110 shadow-lg`
-              : 'bg-white/20 text-white hover:bg-white/30'
-          }`}
+          className={`px-6 py-3 rounded-full font-bold transition-all duration-500 transform flex items-center gap-2 ${activeGame === game
+            ? `${games[game].bgColor} text-gray-800 scale-110 shadow-lg`
+            : 'bg-white/20 text-white hover:bg-white/30'
+            }`}
         >
           <div className="w-5 h-5">{games[game].icon}</div>
           <span>{game}</span>
@@ -90,7 +89,7 @@ const NumberBall: React.FC<{
       className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg animate-pop-in ${color}`}
       style={{
         animationDelay: `${0.3 + index * 0.2}s`,
-        transform: `rotate(${(index - Math.floor(total/2)) * 5}deg)`
+        transform: `rotate(${(index - Math.floor(total / 2)) * 5}deg)`
       }}
     >
       {number}
@@ -105,7 +104,7 @@ const ResultRow: React.FC<{
   index: number;
 }> = ({ prize, amount, index }) => {
   return (
-    <div 
+    <div
       className="grid grid-cols-2 border-b border-white/15 py-4 hover:bg-white/10 transition-all animate-fade-slide-up rounded-lg px-4"
       style={{ animationDelay: `${0.5 + index * 0.1}s` }}
     >
@@ -130,11 +129,10 @@ const DrawTime: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center transition-all duration-500 ${
-        isActive 
-          ? 'opacity-100 scale-110' 
-          : 'opacity-70 scale-95 hover:opacity-90 hover:scale-100'
-      }`}
+      className={`flex flex-col items-center transition-all duration-500 ${isActive
+        ? 'opacity-100 scale-110'
+        : 'opacity-70 scale-95 hover:opacity-90 hover:scale-100'
+        }`}
     >
       <div className="flex items-center gap-2 mb-2">
         <Clock className="w-4 h-4 text-white/80" />
@@ -251,7 +249,7 @@ const LotteryResults: React.FC = () => {
   };
 
   const drawTimes: string[] = ['04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM'];
-  
+
   const prizes: PrizeInfo[] = [
     { prize: "First Prize", amount: "₹1,00,000" },
     { prize: "Second Prize", amount: "₹50,000" },
@@ -264,33 +262,31 @@ const LotteryResults: React.FC = () => {
   const currentDate = 'FRI 18 AUG, 2023';
 
   return (
-    <div 
+    <div
       ref={sectionRef}
-      className={`relative w-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-1000  ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}
+      className={`relative w-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-1000  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+        }`}
       style={{ minHeight: '800px' }}
     >
       {/* Animated background that changes with active game */}
       <AnimatedBackground game={games[activeGame]} />
-      
+
       {/* Content container */}
-      <div className="relative z-10">
+      <div className="relative z-10 roun">
         {/* Header */}
-        <div className="relative p-8 pb-4">
-          <h1 className={`text-5xl font-bold text-white text-center mb-4 ${
-            isVisible ? 'animate-title-reveal' : ''
-          }`}>
+        <div className="relative p-8 pb-4 container mx-auto bg-white/10 backdrop-blur-sm shadow-lg mb-8 flex flex-col items-center text-center">
+          <h1 className={`text-5xl font-bold text-white mb-4 ${isVisible ? 'animate-title-reveal' : ''}`}>
             Latest Draw Results
           </h1>
-          
+
           <div className="w-full h-px bg-gradient-to-r from-transparent via-white/50 to-transparent mb-8"></div>
-          
-          <div className="flex justify-between items-center mb-8">
+
+          <div className="flex justify-between items-center w-full max-w-2xl mb-8">
             <h2 className="text-3xl font-bold text-white flex items-center gap-3">
               <span className={`w-10 h-10 rounded-lg ${games[activeGame].primaryColor} flex items-center justify-center transition-all duration-300`}>
                 {games[activeGame].icon}
               </span>
+
               <span className="animate-fade-in">{activeGame}</span>
             </h2>
             <div className="text-white font-medium bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
@@ -298,33 +294,33 @@ const LotteryResults: React.FC = () => {
             </div>
           </div>
 
-          {/* Game tabs */}
-          <GameTabs 
-            games={games} 
-            activeGame={activeGame} 
-            setActiveGame={setActiveGame} 
+          <GameTabs
+            games={games}
+            activeGame={activeGame}
+            setActiveGame={setActiveGame}
           />
         </div>
 
+
         {/* Main content */}
-        <div className="px-8 pb-8">
+        <div className="px-8 pb-8 container mx-auto relative z-10 bg-white/10 backdrop-blur-sm  shadow-lg overflow-hidden">
           {/* Draw time navigation */}
-          <div className="flex justify-between items-center mb-12 bg-white/5 backdrop-blur-sm p-4 rounded-xl">
+          <div className="flex justify-between items-center mb-12 mt-12 bg-white/5 backdrop-blur-sm p-4 rounded-xl">
             <button className="p-3 rounded-full hover:bg-white/10 transition-all">
               <ChevronLeft className="w-5 h-5 text-white" />
             </button>
-            
+
             <div className="flex gap-8">
               {drawTimes.slice(0, 3).map((time) => (
-                <DrawTime 
-                  key={time} 
-                  time={time} 
+                <DrawTime
+                  key={time}
+                  time={time}
                   isActive={activeDrawTime === time}
                   onClick={() => setActiveDrawTime(time)}
                 />
               ))}
             </div>
-            
+
             <button className="p-3 rounded-full hover:bg-white/10 transition-all">
               <ChevronRight className="w-5 h-5 text-white" />
             </button>
@@ -336,9 +332,9 @@ const LotteryResults: React.FC = () => {
             <div className="flex justify-center gap-4 mb-12 relative">
               <div className="absolute inset-0 bg-white/5 rounded-full blur-3xl"></div>
               {games[activeGame].numbers.map((number, index) => (
-                <NumberBall 
-                  key={index} 
-                  number={number} 
+                <NumberBall
+                  key={index}
+                  number={number}
                   color={index % 2 === 0 ? games[activeGame].primaryColor : games[activeGame].secondaryColor}
                   index={index}
                   total={games[activeGame].numbers.length}
@@ -355,10 +351,10 @@ const LotteryResults: React.FC = () => {
               </h3>
               <div className="space-y-2 relative">
                 {prizes.map((prize, index) => (
-                  <ResultRow 
-                    key={index} 
-                    prize={prize.prize} 
-                    amount={prize.amount} 
+                  <ResultRow
+                    key={index}
+                    prize={prize.prize}
+                    amount={prize.amount}
                     index={index}
                   />
                 ))}
@@ -376,25 +372,7 @@ const LotteryResults: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* Previous results button */}
-        <div className="flex justify-center pb-10">
-          <button className="group px-8 py-3 rounded-full bg-white/10 text-white font-semibold transition-all relative overflow-hidden hover:shadow-lg">
-            <span className="relative z-10">PREVIOUS RESULTS</span>
-            <div className="absolute inset-0 w-0 bg-white/20 transition-all group-hover:w-full"></div>
-          </button>
-        </div>
       </div>
-
-      {/* Back to top button */}
-      <div className="fixed bottom-6 right-6">
-        <button className="p-3 bg-amber-500 rounded-lg shadow-lg hover:bg-amber-400 transition-all animate-bounce" style={{ animationDuration: '2s', animationIterationCount: 'infinite' }}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-          </svg>
-        </button>
-      </div>
-
       <style jsx global>{`
         @keyframes pop-in {
           0% { transform: scale(0.5); opacity: 0; }

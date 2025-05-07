@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Heart, X, Trash2, Plus, Minus, ShoppingCart, Timer, Sparkles, 
-  ChevronDown, ChevronUp, Clock, Gift, Droplet, AlertTriangle
+import {
+  Heart, X, Trash2, Plus, Minus, ShoppingCart, Sparkles,
+  ChevronDown, ChevronUp, Clock, Gift, Droplet
 } from 'lucide-react';
-import Image from "next/image";
+
 
 
 const ZodiacLotteryGame = () => {
@@ -16,30 +16,30 @@ const ZodiacLotteryGame = () => {
   const [customMultiplier, setCustomMultiplier] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
   const [cartItems, setCartItems] = useState(0);
-  const [isDrawDetailsOpen, setIsDrawDetailsOpen] = useState(false);
-  const [showRecentWinners, setShowRecentWinners] = useState(false);
+  const [isDrawDetailsOpen] = useState(false);
+
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
-  
+
   // Live countdown timer
   const [timeLeft, setTimeLeft] = useState({
     hours: 1,
     minutes: 14,
     seconds: 38
   });
-  
+
   // Fake recent winners
   const recentWinners = [
     { name: "Ahmed M.", prize: "50,000 AED", zodiac: "Leo" },
     { name: "Sarah K.", prize: "10,000 AED", zodiac: "Gemini" },
     { name: "Michael T.", prize: "25,000 AED", zodiac: "Capricorn" },
   ];
-  
+
   // Upcoming draws
   const upcomingDraws = [
     { name: "Grand Draw", date: "17 Sep 2024", time: "06:30 PM", prize: "1,000,000 AED" },
     { name: "Weekly Draw", date: "24 Sep 2024", time: "08:00 PM", prize: "500,000 AED" },
   ];
-  
+
   // Simulate countdown
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,10 +54,10 @@ const ZodiacLotteryGame = () => {
         return prev;
       });
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, []);
-  
+
   const zodiacSigns = [
     { id: 1, name: 'ARIES', icon: '♈', emoji: '🐏', color: 'bg-red-100', borderColor: 'border-red-400', textColor: 'text-red-600' },
     { id: 2, name: 'TAURUS', icon: '♉', emoji: '🐂', color: 'bg-green-100', borderColor: 'border-green-400', textColor: 'text-green-600' },
@@ -72,16 +72,16 @@ const ZodiacLotteryGame = () => {
     { id: 11, name: 'AQUARIUS', icon: '♒', emoji: '🏺', color: 'bg-teal-100', borderColor: 'border-teal-400', textColor: 'text-teal-600' },
     { id: 12, name: 'PISCES', icon: '♓', emoji: '🐟', color: 'bg-blue-100', borderColor: 'border-blue-400', textColor: 'text-blue-600' }
   ];
-  
+
   // Calculate total amount
   const basePrice = 10;
   const totalAmount = basePrice * quantity * multiplier;
   const potentialWinAmount = totalAmount * 20; // Example win calculation
-  
+
   const handleAddToCart = () => {
     if (selectedZodiac !== null) {
       setCartItems(prev => prev + 1);
-      
+
       // Show animation
       const cartButton = document.getElementById('cart-button');
       if (cartButton) {
@@ -95,9 +95,9 @@ const ZodiacLotteryGame = () => {
       alert("Please select a zodiac sign first");
     }
   };
-  
+
   const formatTimeUnit = (unit: number) => unit.toString().padStart(2, '0');
-  
+
   const handleCustomMultiplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
@@ -107,9 +107,9 @@ const ZodiacLotteryGame = () => {
       }
     }
   };
-  
+
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-emerald-500 to-teal-700">      
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-emerald-500 to-teal-700">
       {/* Draw details panel (collapsible) */}
       <AnimatePresence>
         {isDrawDetailsOpen && (
@@ -138,7 +138,7 @@ const ZodiacLotteryGame = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm p-4 flex-1">
                   <h3 className="font-medium text-gray-800 mb-2 flex items-center">
                     <Sparkles className="h-4 w-4 mr-2 text-amber-500" />
@@ -161,11 +161,11 @@ const ZodiacLotteryGame = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {/* Main content */}
       <div className=" px-4 py-6 flex flex-col lg:flex-row gap-6">
         {/* Left panel - Active selection */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl shadow-xl p-6 flex-1 min-w-0 relative"
@@ -173,7 +173,7 @@ const ZodiacLotteryGame = () => {
           <div className="absolute -top-4 -left-4 bg-amber-500 text-white font-bold text-sm px-6 py-1 rounded-full shadow-md">
             Lucky Zodiac
           </div>
-          
+
           <div className="flex justify-between items-center mb-6">
             <div className="relative w-48">
               <select className="w-full appearance-none border border-gray-300 rounded-lg px-4 py-2 pr-8 text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
@@ -183,11 +183,11 @@ const ZodiacLotteryGame = () => {
               </select>
               <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-gray-500" />
             </div>
-            
+
             <div className="flex gap-2">
-              <motion.button 
+              <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsFavorite(!isFavorite)} 
+                onClick={() => setIsFavorite(!isFavorite)}
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
               >
                 <Heart className={isFavorite ? "h-5 w-5 text-red-500 fill-red-500" : "h-5 w-5 text-gray-400"} />
@@ -200,13 +200,13 @@ const ZodiacLotteryGame = () => {
               </motion.button>
             </div>
           </div>
-          
+
           {/* Zodiac sign selection guide */}
           <div className="text-center mb-4">
             <h3 className="font-semibold text-lg text-gray-800">Select Your Lucky Zodiac Sign</h3>
             <p className="text-sm text-gray-500">Choose your birth sign or any sign you feel lucky with today</p>
           </div>
-          
+
           {/* Zodiac grid */}
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
             <AnimatePresence>
@@ -219,11 +219,10 @@ const ZodiacLotteryGame = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.2, delay: sign.id * 0.05 }}
                   onClick={() => setSelectedZodiac(sign.id)}
-                  className={`relative cursor-pointer rounded-lg border-2 aspect-square flex flex-col items-center justify-center ${
-                    selectedZodiac === sign.id 
-                      ? `${sign.borderColor} ${sign.color} shadow-md` 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                  className={`relative cursor-pointer rounded-lg border-2 aspect-square flex flex-col items-center justify-center ${selectedZodiac === sign.id
+                    ? `${sign.borderColor} ${sign.color} shadow-md`
+                    : 'border-gray-200 hover:border-gray-300'
+                    }`}
                 >
                   <div className="absolute top-1 left-1 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                     {sign.id}
@@ -235,16 +234,16 @@ const ZodiacLotteryGame = () => {
               ))}
             </AnimatePresence>
           </div>
-          
+
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <h4 className="font-medium text-gray-700 mb-2">Your Selected Zodiac</h4>
             {selectedZodiac ? (
               <div className="flex items-center">
-                <div className={`text-2xl mr-3 ${zodiacSigns[selectedZodiac-1].textColor}`}>
-                  {zodiacSigns[selectedZodiac-1].emoji}
+                <div className={`text-2xl mr-3 ${zodiacSigns[selectedZodiac - 1].textColor}`}>
+                  {zodiacSigns[selectedZodiac - 1].emoji}
                 </div>
                 <div>
-                  <div className="font-semibold">{zodiacSigns[selectedZodiac-1].name}</div>
+                  <div className="font-semibold">{zodiacSigns[selectedZodiac - 1].name}</div>
                   <div className="text-xs text-gray-500">Your lucky zodiac for this draw</div>
                 </div>
               </div>
@@ -252,13 +251,13 @@ const ZodiacLotteryGame = () => {
               <div className="text-sm text-gray-500 italic">Please select a zodiac sign above</div>
             )}
           </div>
-          
+
           {/* Multiplier section */}
           <div className="mb-6">
             <h4 className="font-medium text-gray-700 mb-3">Choose Your Multiplier</h4>
             <div className="flex flex-wrap gap-3">
               {[1, 2, 5, 10, 20, 50].map((value) => (
-                <motion.button 
+                <motion.button
                   key={value}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -266,19 +265,18 @@ const ZodiacLotteryGame = () => {
                     setMultiplier(value);
                     setCustomMultiplier('');
                   }}
-                  className={`rounded-full px-4 py-2 min-w-16 text-center transition-colors ${
-                    multiplier === value 
-                      ? 'bg-emerald-500 text-white shadow-md' 
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                  }`}
+                  className={`rounded-full px-4 py-2 min-w-16 text-center transition-colors ${multiplier === value
+                    ? 'bg-emerald-500 text-white shadow-md'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                    }`}
                 >
                   {value}×
                 </motion.button>
               ))}
-              
+
               <div className="relative">
                 <span className="absolute left-3 top-2.5 text-gray-500">×</span>
-                <input 
+                <input
                   type="text"
                   placeholder="Custom"
                   className="pl-8 pr-3 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
@@ -288,7 +286,7 @@ const ZodiacLotteryGame = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Summary and action buttons */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -296,21 +294,21 @@ const ZodiacLotteryGame = () => {
                 <div className="text-xs text-gray-500">Base Price</div>
                 <div className="font-semibold text-gray-800">{basePrice} AED</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-3 shadow-sm">
                 <div className="text-xs text-gray-500">Quantity × Multiplier</div>
                 <div className="font-semibold text-gray-800">{quantity} × {multiplier}</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-3 shadow-sm">
                 <div className="text-xs text-gray-500">Total Amount</div>
                 <div className="font-semibold text-emerald-600">{totalAmount} AED</div>
               </div>
             </div>
           </div>
-          
+
           {/* Win indicator */}
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.01 }}
             className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg p-4 flex justify-between items-center mb-6"
           >
@@ -324,7 +322,7 @@ const ZodiacLotteryGame = () => {
               ))}
             </div>
           </motion.div>
-          
+
           {/* Expand/collapse button for mobile */}
           <div className="lg:hidden flex justify-center mb-4">
             <motion.button
@@ -346,49 +344,48 @@ const ZodiacLotteryGame = () => {
             </motion.button>
           </div>
         </motion.div>
-        
+
         {/* Right panel - Preview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className={`lg:w-1/3 bg-white rounded-xl shadow-xl p-6 flex flex-col ${
-            isPanelExpanded || window.innerWidth >= 1024 ? 'block' : 'hidden'
-          }`}
+          className={`lg:w-1/3 bg-white rounded-xl shadow-xl p-6 flex flex-col ${isPanelExpanded || window.innerWidth >= 1024 ? 'block' : 'hidden'
+            }`}
         >
 
           {/* Water bottle visualization */}
           <div className="flex flex-col items-center">
-          <motion.div 
-  whileHover={{ rotate: [0, -5, 5, -5, 0], transition: { duration: 1 } }}
-  className="relative shadow-lg w-40 h-56 mt-8 mb-2 bg-no-repeat bg-center bg-contain"
-  style={{ backgroundImage: "url('/BottleWithML-1.png')" }}
->
-  {/* Optional: Water bottle top — keep or remove */}
-  {/* <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-700 rounded-full"></div>
+            <motion.div
+              whileHover={{ rotate: [0, -5, 5, -5, 0], transition: { duration: 1 } }}
+              className="relative shadow-lg w-40 h-56 mt-8 mb-2 bg-no-repeat bg-center bg-contain"
+              style={{ backgroundImage: "url('/BottleWithML-1.png')" }}
+            >
+              {/* Optional: Water bottle top — keep or remove */}
+              {/* <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-700 rounded-full"></div>
   <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-800 rounded-full"></div> */}
 
-  {/* Zodiac sign inside bottle */}
-  {selectedZodiac && (
-    <div className="absolute inset-0 flex items-center justify-center text-white text-opacity-50 text-4xl">
-      {zodiacSigns[selectedZodiac - 1].icon}
-    </div>
-  )}
-</motion.div>
+              {/* Zodiac sign inside bottle */}
+              {selectedZodiac && (
+                <div className="absolute inset-0 flex items-center justify-center text-white text-opacity-50 text-4xl">
+                  {zodiacSigns[selectedZodiac - 1].icon}
+                </div>
+              )}
+            </motion.div>
 
-            
+
             <div className="text-center text-gray-700 font-medium mt-2">
               Pure Life Water
             </div>
             <div className="text-center text-emerald-600 font-bold mb-4">
               250 ML
             </div>
-            
+
             {/* Quantity controls */}
             <div className="flex flex-col items-center gap-4 my-4 w-full">
               <div className="flex items-center gap-3 justify-center">
                 <span className="text-sm font-medium text-gray-600">Bottles</span>
-                <motion.button 
+                <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center"
@@ -399,7 +396,7 @@ const ZodiacLotteryGame = () => {
                 <div className="bg-white border border-gray-300 rounded-full w-12 h-10 flex items-center justify-center text-xl font-medium text-gray-800">
                   {quantity}
                 </div>
-                <motion.button 
+                <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(quantity + 1)}
                   className="bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center"
@@ -408,21 +405,20 @@ const ZodiacLotteryGame = () => {
                 </motion.button>
               </div>
             </div>
-            
+
             {/* Add to cart */}
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
-              className={`bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-full px-8 py-3 mt-4 w-full flex items-center justify-center shadow-md ${
-                !selectedZodiac ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
+              className={`bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-full px-8 py-3 mt-4 w-full flex items-center justify-center shadow-md ${!selectedZodiac ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
               disabled={!selectedZodiac}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
               ADD TO CART
             </motion.button>
-            
+
             <div className="text-center mt-6">
               <div className="font-medium text-gray-800">Subtotal: <span className="text-emerald-600 font-bold">{totalAmount} AED</span></div>
               <div className="text-xs text-gray-500 mt-2 flex items-center justify-center">
@@ -430,7 +426,7 @@ const ZodiacLotteryGame = () => {
                 Your purchased bottle is donated to those in need
               </div>
             </div>
-            
+
             {/* Charity impact */}
             <div className="mt-6 bg-amber-50 p-4 rounded-lg border border-amber-200">
               <h4 className="font-medium text-amber-700 mb-2 flex items-center">
@@ -438,16 +434,16 @@ const ZodiacLotteryGame = () => {
                 Your Impact
               </h4>
               <p className="text-xs text-amber-700">
-                For every ticket purchased, we donate a bottle of clean water to communities in need. 
-                You've helped provide {cartItems} bottles so far!
+                For every ticket purchased, we donate a bottle of clean water to communities in need.
+                You&apos;ve helped provide {cartItems} bottles so far!
               </p>
             </div>
           </div>
         </motion.div>
       </div>
-      
+
       {/* Live Draw Timer */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
@@ -472,16 +468,16 @@ const ZodiacLotteryGame = () => {
           </div>
         </div>
       </motion.div>
-            
+
       {/* Shopping cart indicator */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         className="fixed bottom-20 right-4 bg-gray-800 text-white p-4 rounded-full shadow-lg flex items-center justify-center cursor-pointer"
       >
         <ShoppingCart className="h-6 w-6" />
         {cartItems > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="absolute -top-2 -right-2 bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold"

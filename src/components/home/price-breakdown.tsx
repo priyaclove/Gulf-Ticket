@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, SetStateAction } from 'react';
 import { motion } from 'framer-motion';
 
 const games = [
@@ -87,33 +87,16 @@ const games = [
 
 export default function LotteryGamesUI() {
   const [activeGame, setActiveGame] = useState(games[0]);
-  const [selectedNumber, setSelectedNumber] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setSelectedNumber] = useState('');
+
 
   const handleGameClick = (game: SetStateAction<{ id: string; name: string; color: string; digits: number; prizes: { match: number; prize: string; label: string; }[]; } | { id: string; name: string; color: string; digits: number; prizes: { match: string; prize: string; label: string; }[]; }>) => {
     setActiveGame(game);
     setSelectedNumber('');
   };
 
-  const handleNumberSelect = (num: string | number) => {
-    if (selectedNumber.includes(num.toString())) {
-      setSelectedNumber(selectedNumber.replace(num.toString(), ''));
-    } else {
-      if (selectedNumber.length < activeGame.digits) {
-        setSelectedNumber(selectedNumber + num);
-      }
-    }
-  };
 
-  const handlePlayNow = () => {
-    if (selectedNumber.length === activeGame.digits) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        setSelectedNumber('');
-      }, 1500);
-    }
-  };
+
 
   const getStarColor = (game: { id: string; name: string; color: string; digits: number; prizes: { match: number; prize: string; label: string; }[]; } | { id: string; name: string; color: string; digits: number; prizes: { match: string; prize: string; label: string; }[]; }) => {
     switch (game.id) {
@@ -130,7 +113,7 @@ export default function LotteryGamesUI() {
   const renderStars = (count: number, total: number) => {
     const stars = [];
     const starColor = getStarColor(activeGame);
-    
+
     for (let i = 0; i < total; i++) {
       stars.push(
         <div key={i} className={`w-8 h-8 rounded-full flex items-center justify-center`}>
@@ -149,52 +132,9 @@ export default function LotteryGamesUI() {
     return stars;
   };
 
-  const renderNumberBubbles = () => {
-    const bubbles = [];
-    for (let i = 0; i < activeGame.digits; i++) {
-      bubbles.push(
-        <motion.div 
-          key={i}
-          className="w-12 h-12 rounded-full border-2 flex items-center justify-center text-lg font-bold"
-          style={{ 
-            borderColor: activeGame.color,
-            color: activeGame.color,
-            backgroundColor: selectedNumber[i] ? `${activeGame.color}20` : 'transparent'
-          }}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: i * 0.1 }}
-        >
-          {selectedNumber[i] || ''}
-        </motion.div>
-      );
-    }
-    return bubbles;
-  };
 
-  const renderNumberPad = () => {
-    const numbers = [];
-    for (let i = 0; i <= 9; i++) {
-      numbers.push(
-        <motion.button
-          key={i}
-          className="w-12 h-12 rounded-full text-lg font-bold transition-all duration-300"
-          style={{ 
-            backgroundColor: selectedNumber.includes(i.toString()) ? activeGame.color : 'white',
-            color: selectedNumber.includes(i.toString()) ? 'white' : '#333',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-            border: `1px solid ${activeGame.color}`
-          }}
-          onClick={() => handleNumberSelect(i)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {i}
-        </motion.button>
-      );
-    }
-    return numbers;
-  };
+
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -209,14 +149,14 @@ export default function LotteryGamesUI() {
 
       <main className="flex-grow p-4 md:p-8">
         <div className=" bg-white rounded-2xl shadow-lg overflow-hidden">
-          
+
           {/* Game Selection Tabs */}
           <div className="flex overflow-x-auto scrollbar-hide p-2 bg-gray-50 border-b">
             {games.map((game) => (
               <motion.button
                 key={game.id}
                 className={`flex-shrink-0 px-6 py-3 mx-1 rounded-lg font-bold transition-all duration-300 ${activeGame.id === game.id ? 'text-white' : 'text-gray-600'}`}
-                style={{ 
+                style={{
                   backgroundColor: activeGame.id === game.id ? game.color : 'transparent',
                   border: `2px solid ${game.color}`
                 }}
@@ -269,7 +209,7 @@ export default function LotteryGamesUI() {
               </div>
               <div className="border border-gray-200 rounded-b-xl">
                 {activeGame.prizes.map((prize, idx) => (
-                  <motion.div 
+                  <motion.div
                     key={idx}
                     className="flex items-center p-4 border-b last:border-b-0"
                     initial={{ opacity: 0, x: -20 }}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 
 const cards = [
   { title: "Lucky1", price: "AED 5", date: "Thu 15 Aug 2024 08:00 PM (UAE)", color: "bg-green-500", badge: "bg-green-700" },
@@ -20,9 +20,8 @@ export default function CardGame() {
       {cards.map((card, i) => (
         <div key={i} className="w-64 h-72 perspective">
           <div
-            className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
-              flippedCard === i ? "rotate-y-180" : ""
-            }`}
+            className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${flippedCard === i ? "rotate-y-180" : ""
+              }`}
             onMouseEnter={() => setFlippedCard(i)}
             onMouseLeave={() => setFlippedCard(null)}
           >

@@ -27,7 +27,7 @@ export default function Lucky1DInfo() {
           variants={fadeUp}
           custom={0}
         >
-          Lucky1-1D: Malaysia's Daily Chance to Win Big on GulfTicket
+          Lucky1-1D: Malaysia&apos;s Daily Chance to Win Big on GulfTicket
         </motion.h2>
         <motion.p
           className={subheadingStyle}
