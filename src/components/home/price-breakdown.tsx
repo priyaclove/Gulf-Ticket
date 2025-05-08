@@ -137,7 +137,7 @@ export default function LotteryGamesUI() {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col  bg-gray-50">
       <header className="bg-white shadow-md p-4">
         <h1 className="text-2xl font-bold text-center text-gray-800">
           UAE Lottery Games
@@ -147,7 +147,7 @@ export default function LotteryGamesUI() {
         </p>
       </header>
 
-      <main className="flex-grow p-4 md:p-8">
+      <main className=" container mx-auto flex-grow p-4 md:p-8">
         <div className=" bg-white rounded-2xl shadow-lg overflow-hidden">
 
           {/* Game Selection Tabs */}

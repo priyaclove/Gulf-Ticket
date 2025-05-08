@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Milk,Shuffle, CircleDollarSign, Youtube, TreePalm } from "lucide-react";  
+import { Milk, Shuffle, CircleDollarSign, Youtube, TreePalm } from "lucide-react";
 const steps = [
   {
     icon: <Milk className="w-10 h-10 text-green-600" />,
@@ -33,7 +33,7 @@ const steps = [
 export default function AboutSteps() {
   return (
     <section className="bg-white py-20">
-      <div className=" px-6">
+      <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
           <span className="text-gray-900">About </span>
           <span className="text-green-600">Lucky1</span>
@@ -43,7 +43,7 @@ export default function AboutSteps() {
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              className="rounded-xl border border-green-500 p-6 text-center shadow-md hover:shadow-lg transition-shadow bg-white"
+              className="rounded-xl border  border-green-500 p-6 text-center shadow-md hover:shadow-lg transition-shadow bg-white"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}

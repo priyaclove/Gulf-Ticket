@@ -1,27 +1,8 @@
 "use client"
 
-import { ChevronUp } from "lucide-react"
-import { useEffect, useState } from "react"
 
 export default function HowToPlay() {
-  const [showScrollTop, setShowScrollTop] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTop(true)
-      } else {
-        setShowScrollTop(false)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
 
   return (
     <section className="w-full bg-[#4a4a4a] py-12 px-4 text-white relative">
@@ -162,15 +143,7 @@ export default function HowToPlay() {
         <p className="text-white font-medium">Know More</p>
       </div>
 
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-[#F39C12] p-2 rounded-md shadow-lg hover:bg-[#E67E22] transition-colors"
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="h-6 w-6 text-white" />
-        </button>
-      )}
+
     </section>
   )
 }

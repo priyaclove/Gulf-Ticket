@@ -167,7 +167,7 @@ const DrawWinners: React.FC = () => {
       </motion.div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="relative  z-10 flex flex-col md:flex-row items-center justify-center container mx-auto gap-8">
         {/* Winners Section */}
         <div className="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {winners.map((winner, index) => (

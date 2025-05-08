@@ -6,8 +6,6 @@ import {
   ChevronDown, ChevronUp, Clock, Gift, Droplet
 } from 'lucide-react';
 
-
-
 const ZodiacLotteryGame = () => {
   // States
   const [selectedZodiac, setSelectedZodiac] = useState<number | null>(null);
@@ -17,8 +15,11 @@ const ZodiacLotteryGame = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [cartItems, setCartItems] = useState(0);
   const [isDrawDetailsOpen] = useState(false);
-
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  // State to track if we're in client-side or not
+  const [isClient, setIsClient] = useState(false);
+  // State for viewport width
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   // Live countdown timer
   const [timeLeft, setTimeLeft] = useState({
@@ -26,6 +27,21 @@ const ZodiacLotteryGame = () => {
     minutes: 14,
     seconds: 38
   });
+
+  // Set isClient to true once component mounts (client-side only)
+  useEffect(() => {
+    setIsClient(true);
+    // Set large screen in a useEffect to avoid hydration mismatch
+    setIsLargeScreen(window.innerWidth >= 1024);
+
+    // Add resize listener
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fake recent winners
   const recentWinners = [
@@ -42,6 +58,8 @@ const ZodiacLotteryGame = () => {
 
   // Simulate countdown
   useEffect(() => {
+    if (!isClient) return; // Only run on client
+
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev.seconds > 0) {
@@ -56,7 +74,7 @@ const ZodiacLotteryGame = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isClient]);
 
   const zodiacSigns = [
     { id: 1, name: 'ARIES', icon: '♈', emoji: '🐏', color: 'bg-red-100', borderColor: 'border-red-400', textColor: 'text-red-600' },
@@ -79,6 +97,8 @@ const ZodiacLotteryGame = () => {
   const potentialWinAmount = totalAmount * 20; // Example win calculation
 
   const handleAddToCart = () => {
+    if (!isClient) return; // Only run on client
+
     if (selectedZodiac !== null) {
       setCartItems(prev => prev + 1);
 
@@ -91,14 +111,13 @@ const ZodiacLotteryGame = () => {
         }, 1000);
       }
     } else {
-      // Show error that no zodiac is selected
       alert("Please select a zodiac sign first");
     }
   };
 
   const formatTimeUnit = (unit: number) => unit.toString().padStart(2, '0');
 
-  const handleCustomMultiplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomMultiplierChange = (e: { target: { value: any; }; }) => {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
       setCustomMultiplier(value);
@@ -106,6 +125,46 @@ const ZodiacLotteryGame = () => {
         setMultiplier(parseInt(value));
       }
     }
+  };
+
+  // Determine if we should show the right panel
+  const showRightPanel = isPanelExpanded || isLargeScreen;
+
+  // Use client-side rendering for animated background
+  const AnimatedBackgroundContent = () => {
+    if (!isClient) return null;
+
+    // Fixed background element properties (static for both server and client)
+    const backgroundElements = [
+      { left: '50%', top: '45%', delay: '4.3s', duration: '23s', width: '36px', height: '95px', background: 'bg-purple-600' },
+      { left: '28%', top: '88%', delay: '0.2s', duration: '20s', width: '51px', height: '78px', background: 'bg-purple-500' },
+      { left: '17%', top: '63%', delay: '1.4s', duration: '23s', width: '61px', height: '41px', background: 'bg-purple-600' },
+      { left: '83%', top: '69%', delay: '1.0s', duration: '28s', width: '75px', height: '83px', background: 'bg-purple-500' },
+      { left: '64%', top: '84%', delay: '0.5s', duration: '25s', width: '56px', height: '80px', background: 'bg-purple-600' },
+      { left: '13%', top: '20%', delay: '0.5s', duration: '29s', width: '74px', height: '85px', background: 'bg-purple-500' },
+      { left: '45%', top: '67%', delay: '3.9s', duration: '23s', width: '46px', height: '47px', background: 'bg-purple-600' },
+      { left: '37%', top: '99%', delay: '2.9s', duration: '15s', width: '93px', height: '95px', background: 'bg-purple-500' },
+      { left: '81%', top: '96%', delay: '1.1s', duration: '29s', width: '71px', height: '36px', background: 'bg-purple-600' },
+      { left: '3%', top: '1%', delay: '1.7s', duration: '23s', width: '53px', height: '38px', background: 'bg-purple-500' },
+      { left: '96%', top: '13%', delay: '0.3s', duration: '29s', width: '95px', height: '78px', background: 'bg-purple-600' },
+      { left: '89%', top: '30%', delay: '3.0s', duration: '21s', width: '72px', height: '99px', background: 'bg-purple-500' }
+    ];
+
+    return backgroundElements.map((el, index) => (
+      <div
+        key={index}
+        className="absolute opacity-20 rounded-lg rotate-12 animate-float"
+        style={{
+          left: el.left,
+          top: el.top,
+          animationDelay: el.delay,
+          animationDuration: el.duration,
+          width: el.width,
+          height: el.height,
+          backgroundColor: el.background === 'bg-purple-500' ? '#8b5cf6' : '#7c3aed'  // Using direct color values instead of class names
+        }}
+      />
+    ));
   };
 
   return (
@@ -119,7 +178,7 @@ const ZodiacLotteryGame = () => {
             exit={{ height: 0, opacity: 0 }}
             className="bg-gray-50 border-b border-gray-200 overflow-hidden"
           >
-            <div className=" p-4">
+            <div className="p-4">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="bg-white rounded-lg shadow-sm p-4 flex-1">
                   <h3 className="font-medium text-gray-800 mb-2 flex items-center">
@@ -163,7 +222,7 @@ const ZodiacLotteryGame = () => {
       </AnimatePresence>
 
       {/* Main content */}
-      <div className=" px-4 py-6 flex flex-col lg:flex-row gap-6">
+      <div className=" container mx-auto justify-center px-4 py-6 flex flex-col lg:flex-row gap-6">
         {/* Left panel - Active selection */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -350,8 +409,7 @@ const ZodiacLotteryGame = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className={`lg:w-1/3 bg-white rounded-xl shadow-xl p-6 flex flex-col ${isPanelExpanded || window.innerWidth >= 1024 ? 'block' : 'hidden'
-            }`}
+          className={`lg:w-1/3 bg-white rounded-xl shadow-xl p-6 flex flex-col ${showRightPanel ? 'block' : 'hidden'}`}
         >
 
           {/* Water bottle visualization */}
@@ -361,10 +419,6 @@ const ZodiacLotteryGame = () => {
               className="relative shadow-lg w-40 h-56 mt-8 mb-2 bg-no-repeat bg-center bg-contain"
               style={{ backgroundImage: "url('/BottleWithML-1.png')" }}
             >
-              {/* Optional: Water bottle top — keep or remove */}
-              {/* <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-700 rounded-full"></div>
-  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-800 rounded-full"></div> */}
-
               {/* Zodiac sign inside bottle */}
               {selectedZodiac && (
                 <div className="absolute inset-0 flex items-center justify-center text-white text-opacity-50 text-4xl">
@@ -408,6 +462,7 @@ const ZodiacLotteryGame = () => {
 
             {/* Add to cart */}
             <motion.button
+              id="cart-button" /* Add id for the animation reference */
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
@@ -441,6 +496,13 @@ const ZodiacLotteryGame = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Background elements - using client-side only rendering */}
+      {isClient && (
+        <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+          <AnimatedBackgroundContent />
+        </div>
+      )}
 
       {/* Live Draw Timer */}
       <motion.div
